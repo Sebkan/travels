@@ -25,5 +25,7 @@ public class HotelSearch {
         wait.ignoring(NoSuchElementException.class);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='select2-match' and text()='Dubai']")));
         driver.findElement(By.xpath("//span[@class='select2-match' and text()='Dubai']")).click();
+        driver.findElement(By.name("checkin")).sendKeys("17/10/2022");
+        driver.findElement(By.name("checkout")).sendKeys("20/10/2022");
     }
 }
