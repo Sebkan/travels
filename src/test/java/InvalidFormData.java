@@ -50,10 +50,32 @@ public class InvalidFormData {
         softAssert.assertTrue(alertList.contains("The First name field is required."));
         softAssert.assertTrue(alertList.contains("The Last Name field is required."));
         softAssert.assertAll();*/
-
-
-
-
-
+        driver.quit();
+    }
+    @Test
+    public void wrongEmail()  {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("http://www.kurs-selenium.pl/demo/");
+        driver.findElements(By.xpath("//a[text()=' My Account ']")).stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+                .ifPresent(WebElement::click);
+        driver.findElements(By.xpath("//a[text()='  Sign Up']")).get(1).click();
+        driver.findElement(By.name("firstname")).sendKeys("Sebastian");
+        driver.findElement(By.name("lastname")).sendKeys("Sebuskowy");
+        driver.findElement(By.name("phone")).sendKeys("666666666");
+        driver.findElement(By.name("email")).sendKeys("test.pl");
+        driver.findElement(By.name("password")).sendKeys("test123456");
+        driver.findElement(By.name("confirmpassword")).sendKeys("test123456");
+        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.ignoring(NoSuchElementException.class);
+        wait.withTimeout(Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']//p")));
+        String alert = driver.findElement(By.xpath("//div[@class='alert alert-danger']//p")).getText();
+        Assert.assertEquals(alert,"The Email field must contain a valid email address.");
+        driver.quit();
     }
 }
