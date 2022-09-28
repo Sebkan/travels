@@ -30,6 +30,7 @@ public class NoResultsFound {
         driver.findElement(By.xpath("//button[text()=' Search']")).click();
 
         WebElement heading = driver.findElement(By.cssSelector("h2[class='text-center']"));
+        Assert.assertTrue(heading.isDisplayed());
         Assert.assertEquals(heading.getText(),"No Results Found");
     }
 }
