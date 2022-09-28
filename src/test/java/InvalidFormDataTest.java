@@ -1,28 +1,20 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-public class InvalidFormData {
+public class InvalidFormDataTest extends DriverFactory {
 
     @Test
     public void notFullData() {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
         driver.findElements(By.xpath("//a[text()=' My Account ']")).stream()
                                                                                 .filter(WebElement::isDisplayed)
                                                                                 .findFirst()
@@ -50,14 +42,9 @@ public class InvalidFormData {
         softAssert.assertTrue(alertList.contains("The First name field is required."));
         softAssert.assertTrue(alertList.contains("The Last Name field is required."));
         softAssert.assertAll();*/
-        driver.quit();
     }
     @Test
-    public void wrongEmail()  {
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("http://www.kurs-selenium.pl/demo/");
+    public void wrongEmail(){
         driver.findElements(By.xpath("//a[text()=' My Account ']")).stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
@@ -76,6 +63,5 @@ public class InvalidFormData {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']//p")));
         String alert = driver.findElement(By.xpath("//div[@class='alert alert-danger']//p")).getText();
         Assert.assertEquals(alert,"The Email field must contain a valid email address.");
-        driver.quit();
     }
 }
