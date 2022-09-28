@@ -44,6 +44,7 @@ public class SignUpTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
         WebElement heading = driver.findElement(By.xpath("//h3[@class='RTL']"));
         Assert.assertTrue(heading.getText().contains(lastName));
+        Assert.assertEquals(heading.getText(), "Hi, Sebastian Kanecki");
 
     }
 }
