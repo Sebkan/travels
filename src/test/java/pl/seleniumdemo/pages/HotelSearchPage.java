@@ -24,14 +24,15 @@ public class HotelSearchPage {
     @FindBy(name="checkout")
     private WebElement checkoutInput;
 
-    @FindBy(name = "travellers")
-    private WebElement travellersInput;
+    @FindBy(id = "travellersInput")
+    public WebElement travellersInput;
     @FindBy(id = "adultPlusBtn")
     private WebElement adultNumber;
     @FindBy(id ="childPlusBtn")
     private WebElement childNumber;
     @FindBy(css = "button[type='submit']")
     private WebElement submitButton;
+
 
     public HotelSearchPage(WebDriver driver){
         PageFactory.initElements(driver, this);
@@ -46,12 +47,25 @@ public class HotelSearchPage {
         checkinInput.sendKeys(checkIn);
         checkoutInput.sendKeys(checkOut);
     }
-    public void setTravellers(){
+    public void setTravellers(int adultsToAdd, int childToAdd){
         travellersInput.click();
-        adultNumber.click();
-        childNumber.click();
+            addTravellers(adultNumber,adultsToAdd);
+            addTravellers(childNumber,childToAdd);
+    }
+    private void addTravellers (WebElement travellerBtn, int numberOfTravellers){
+        for (int i = 0; i < numberOfTravellers; i++){
+            travellerBtn.click();
+        }
     }
     public void performSearch(){
         submitButton.click();
     }
+    /*public void setOldStyleTravellers (int addAdults, int addChild){
+        for(int i=0; i < addAdults; i++){
+            adultNumber.click();
+        }
+        for (int i=0; i < addChild; i++){
+            childNumber.click();
+        }
+    }*/
 }

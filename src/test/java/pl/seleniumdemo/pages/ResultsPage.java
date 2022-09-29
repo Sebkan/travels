@@ -12,6 +12,8 @@ public class ResultsPage {
 
     @FindBy(css = "h4[class='RTL go-text-right mt0 mb4 list_title']")
     private List<WebElement> hotelList;
+    @FindBy(css = "h2[class='text-center']")
+    public WebElement heading;
 
     public ResultsPage(WebDriver driver){
         PageFactory.initElements(driver, this);
@@ -21,6 +23,9 @@ public class ResultsPage {
         return hotelList.stream()
                         .map(e->e.getAttribute("textContent"))
                         .collect(Collectors.toList());
+    }
+    public String getHeadingText(){
+        return heading.getText();
     }
 
 

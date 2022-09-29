@@ -25,7 +25,7 @@ public class HotelSearchTest extends DriverFactory {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='select2-match' and text()='Dubai']")));
         driver.findElement(By.xpath("//span[@class='select2-match' and text()='Dubai']")).click();
         hotelSearchPage.setDates("17/10/2022","20/10/2022");
-        hotelSearchPage.setTravellers();
+        hotelSearchPage.setTravellers(1,1);
         hotelSearchPage.performSearch();
 
         ResultsPage resultsPage = new ResultsPage(driver);
@@ -37,25 +37,15 @@ public class HotelSearchTest extends DriverFactory {
     }
 
         @Test
-        public void noResults(){
-            driver.findElement(By.cssSelector("input[name='checkin']")).click();
-            driver.findElement(By.xpath("(//th)[@class='next'][1]")).click();
-            driver.findElements(By.xpath("//td[text()='11']")).stream()
-                                                                           .filter(WebElement::isDisplayed)
-                                                                           .findFirst()
-                                                                           .ifPresent(WebElement::click);
-            driver.findElements(By.xpath("//td[text()='15']")).stream()
-                                                                           .filter(WebElement::isDisplayed)
-                                                                           .findFirst()
-                                                                           .ifPresent(WebElement::click);
-            driver.findElement(By.id("travellersInput")).click();
-            driver.findElement(By.id("adultPlusBtn")).click();
-            driver.findElement(By.id("childPlusBtn")).click();
-            driver.findElement(By.xpath("//button[text()=' Search']")).click();
+        public void noResults()  {
+            HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+            hotelSearchPage.setDates("11/11/2022","15/11/2022");
+            hotelSearchPage.setTravellers(1,1);
+            hotelSearchPage.performSearch();
 
-            WebElement heading = driver.findElement(By.cssSelector("h2[class='text-center']"));
-            Assert.assertTrue(heading.isDisplayed());
-            Assert.assertEquals(heading.getText(),"No Results Found");
+            ResultsPage resultsPage = new ResultsPage(driver);
+            Assert.assertEquals(resultsPage.getHeadingText(),"No Results Found");
+            Assert.assertTrue(resultsPage.heading.isDisplayed());
         }
     }
 
