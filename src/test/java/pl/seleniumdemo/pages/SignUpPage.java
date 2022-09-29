@@ -56,10 +56,14 @@ public class SignUpPage {
         return emailError.getText();
     }
 
+    public void fillSignUpForm(String firstName,String lastName,String phoneNumber,String email,String password) {
+        firstNameInput.sendKeys(firstName);
+        lastNameInput.sendKeys(lastName);
+        phoneInput.sendKeys(phoneNumber);
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        confirmPassInput.sendKeys(password);
+        signUpBtn.click();
+    }
 
-        /*
-        driver.findElement(By.name("email")).sendKeys(email);
-        driver.findElement(By.name("password")).sendKeys("test123456");
-        driver.findElement(By.name("confirmpassword")).sendKeys("test123456");
-        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();*/
 }

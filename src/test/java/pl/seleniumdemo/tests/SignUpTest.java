@@ -16,7 +16,7 @@ import java.time.Duration;
 public class SignUpTest extends DriverFactory {
 
     @Test
-    public void signUp() {
+    public void signUpTest() {
         String lastName = "Kanecki";
         int randomNumber = (int) (Math.random()*1000);
         String email = "test"+randomNumber+"@tester.pl";
@@ -27,6 +27,23 @@ public class SignUpTest extends DriverFactory {
         signUpPage.setEmail(email);
         signUpPage.setPassword("test123","test123");
         signUpPage.submit();
+        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.ignoring(NoSuchElementException.class);
+        wait.withTimeout(Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(loggedUserPage.heading));
+        Assert.assertTrue(loggedUserPage.headingText().contains(lastName));
+        Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
+    }
+    @Test
+    public void signUpTest2() {
+        String lastName = "Kanecki";
+        int randomNumber = (int) (Math.random()*1000);
+        String email = "test"+randomNumber+"@tester.pl";
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        hotelSearchPage.signUpForm();
+        signUpPage.fillSignUpForm("Sebastian","Kanecki","666666666",email,"test123");
         LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
         wait.ignoring(NoSuchElementException.class);
