@@ -12,13 +12,11 @@ public class HotelSearchTest extends DriverFactory {
     @Test
     public void searchHotel() {
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCityName("Dubai");
-        hotelSearchPage.setDates("17/10/2022","20/10/2022");
-        hotelSearchPage.setTravellers(1,1);
-        hotelSearchPage.performSearch();
+        List<String> hotelNames = hotelSearchPage.setCityName("Dubai")
+                        .setDates("17/10/2022","20/10/2022")
+                        .setTravellers(1,1)
+                        .performSearch().getHotelNames();
 
-        ResultsPage resultsPage = new ResultsPage(driver);
-        List<String> hotelNames = resultsPage.getHotelNames();
         Assert.assertEquals(hotelNames.get(0),"Jumeirah Beach Hotel");
         Assert.assertEquals(hotelNames.get(1),"Oasis Beach Tower");
         Assert.assertEquals(hotelNames.get(2),"Rose Rayhaan Rotana");
