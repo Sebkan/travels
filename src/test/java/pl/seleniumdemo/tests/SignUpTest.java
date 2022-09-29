@@ -13,7 +13,7 @@ import pl.seleniumdemo.pages.SignUpPage;
 
 import java.time.Duration;
 
-public class SignUpTestTest extends DriverFactory {
+public class SignUpTest extends DriverFactory {
 
     @Test
     public void signUp() {
