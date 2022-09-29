@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class HotelSearchPage {
     @FindBy(xpath = "//span[text()='Search by Hotel or City Name']")
@@ -30,6 +31,10 @@ public class HotelSearchPage {
     private WebElement childNumber;
     @FindBy(css = "button[type='submit']")
     private WebElement submitButton;
+    @FindBy(xpath = "//li[@id='li_myaccount']")
+    private List<WebElement> myAccountBtn;
+    @FindBy(xpath = "//a[contains(text(),' Sign Up')]")
+    private List<WebElement> signUpBtn;
 
     private WebDriver driver;
 
@@ -66,6 +71,18 @@ public class HotelSearchPage {
     public void performSearch(){
         submitButton.click();
     }
+
+    public void signUpForm(){
+        myAccountBtn.stream()
+                .filter(WebElement::isDisplayed)
+                .findFirst()
+                .ifPresent(WebElement::click);
+        signUpBtn.get(1).click();
+    }
+
+
+
+
     /*public void setOldStyleTravellers (int addAdults, int addChild){
         for(int i=0; i < addAdults; i++){
             adultNumber.click();

@@ -8,7 +8,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pl.seleniumdemo.tests.DriverFactory;
+import pl.seleniumdemo.pages.HotelSearchPage;
+import pl.seleniumdemo.pages.LoggedUserPage;
+import pl.seleniumdemo.pages.SignUpPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -19,29 +21,20 @@ public class SignUpTestTest extends DriverFactory {
     @Test
     public void signUp() {
         String lastName = "Kanecki";
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "test"+randomNumber+"@tester.pl";
-        driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream()
-                        .filter(WebElement::isDisplayed)
-                        .findFirst()
-                        .ifPresent(WebElement::click);
-        driver.findElements(By.xpath("//a[contains(text(),' Sign Up')]")).get(1).click();
-        driver.findElement(By.name("firstname")).sendKeys("Sebastian");
-        driver.findElement(By.name("lastname")).sendKeys(lastName);
-        driver.findElement(By.name("phone")).sendKeys("666666666");
-        driver.findElement(By.name("email")).sendKeys(email);
-        driver.findElement(By.name("password")).sendKeys("test123456");
-        driver.findElement(By.name("confirmpassword")).sendKeys("test123456");
-        driver.findElement(By.xpath("//button[text()=' Sign Up']")).click();
-
+        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        hotelSearchPage.signUpForm();
+        signUpPage.setNameLastPhone("Sebastian",lastName,"666666666");
+        signUpPage.setEmail();
+        signUpPage.setPassword("test123","test123");
+        signUpPage.submit();
+        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
         wait.ignoring(NoSuchElementException.class);
         wait.withTimeout(Duration.ofSeconds(3));
-        wait.pollingEvery(Duration.ofMillis(300));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='RTL']")));
-        WebElement heading = driver.findElement(By.xpath("//h3[@class='RTL']"));
-        Assert.assertTrue(heading.getText().contains(lastName));
-        Assert.assertEquals(heading.getText(), "Hi, Sebastian Kanecki");
+        wait.until(ExpectedConditions.visibilityOf(loggedUserPage.heading));
+        Assert.assertTrue(loggedUserPage.headingText().contains(lastName));
+        Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
     }
         @Test
         public void notFullData() {
