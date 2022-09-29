@@ -7,7 +7,7 @@ import pl.seleniumdemo.pages.ResultsPage;
 
 import java.util.List;
 
-public class HotelSearchTest extends DriverFactory {
+public class HotelSearchTest extends BaseTest {
 
     @Test
     public void searchHotel() {
