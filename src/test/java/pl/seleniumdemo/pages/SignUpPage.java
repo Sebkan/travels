@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SignUpPage {
 
     @FindBy(name="firstname")
@@ -22,6 +25,10 @@ public class SignUpPage {
     private WebElement confirmPassInput;
     @FindBy(xpath="//button[text()=' Sign Up']")
     private WebElement signUpBtn;
+    @FindBy(xpath = "//div[@class='alert alert-danger']//p")
+    private List<WebElement> errorList;
+    @FindBy (xpath = "//div[@class='alert alert-danger']//p")
+    private WebElement emailError;
 
     public SignUpPage(WebDriver driver){
         PageFactory.initElements(driver, this);
@@ -32,9 +39,7 @@ public class SignUpPage {
         lastNameInput.sendKeys(lastName);
         phoneInput.sendKeys(phoneNumber);
     }
-    public void setEmail (){
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "test"+randomNumber+"@tester.pl";
+    public void setEmail (String email){
         emailInput.sendKeys(email);
     }
     public void setPassword(String password, String confirmPss){
@@ -43,6 +48,12 @@ public class SignUpPage {
     }
     public void submit(){
         signUpBtn.click();
+    }
+    public List<String> getErrorNames(){
+        return errorList.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+    public String getEmailError(){
+        return emailError.getText();
     }
 
 
