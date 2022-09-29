@@ -12,52 +12,63 @@ import java.util.stream.Collectors;
 
 public class SignUpPage {
 
-    @FindBy(name="firstname")
+    @FindBy(name = "firstname")
     private WebElement firstNameInput;
     @FindBy(name = "lastname")
     public WebElement lastNameInput;
-    @FindBy(name="phone")
+    @FindBy(name = "phone")
     private WebElement phoneInput;
-    @FindBy(name="email")
+    @FindBy(name = "email")
     private WebElement emailInput;
-    @FindBy(name="password")
+    @FindBy(name = "password")
     private WebElement passwordInput;
-    @FindBy(name="confirmpassword")
+    @FindBy(name = "confirmpassword")
     private WebElement confirmPassInput;
-    @FindBy(xpath="//button[text()=' Sign Up']")
+    @FindBy(xpath = "//button[text()=' Sign Up']")
     private WebElement signUpBtn;
     @FindBy(xpath = "//div[@class='alert alert-danger']//p")
     private List<WebElement> errorList;
-    @FindBy (xpath = "//div[@class='alert alert-danger']//p")
+    @FindBy(xpath = "//div[@class='alert alert-danger']//p")
     private WebElement emailError;
+    public WebDriver driver;
 
-    public SignUpPage(WebDriver driver){
+    public SignUpPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
-    public void setNameLastPhone (String firstName, String lastName, String phoneNumber){
+    public SignUpPage setNameLastPhone(String firstName, String lastName, String phoneNumber) {
         firstNameInput.sendKeys(firstName);
         lastNameInput.sendKeys(lastName);
         phoneInput.sendKeys(phoneNumber);
+        return this;
     }
-    public void setEmail (String email){
+
+    public SignUpPage setEmail(String email) {
         emailInput.sendKeys(email);
+        return this;
     }
-    public void setPassword(String password, String confirmPss){
+
+    public SignUpPage setPassword(String password, String confirmPss) {
         passwordInput.sendKeys(password);
         confirmPassInput.sendKeys(confirmPss);
+        return this;
     }
-    public void submit(){
+
+    public LoggedUserPage submit() {
         signUpBtn.click();
+        return new LoggedUserPage(driver);
     }
-    public List<String> getErrorNames(){
+
+    public List<String> getErrorNames() {
         return errorList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
-    public String getEmailError(){
+
+    public String getEmailError() {
         return emailError.getText();
     }
 
-    public void fillSignUpForm(String firstName,String lastName,String phoneNumber,String email,String password) {
+    /*public void fillSignUpForm(String firstName,String lastName,String phoneNumber,String email,String password) {
         firstNameInput.sendKeys(firstName);
         lastNameInput.sendKeys(lastName);
         phoneInput.sendKeys(phoneNumber);
@@ -74,6 +85,6 @@ public class SignUpPage {
         passwordInput.sendKeys(user.getPassword());
         confirmPassInput.sendKeys(user.getPassword());
         signUpBtn.click();
-    }
+    }*/
 
 }

@@ -15,19 +15,19 @@ public class ResultsPage {
     @FindBy(css = "h2[class='text-center']")
     public WebElement heading;
 
-    public ResultsPage(WebDriver driver){
+    public ResultsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-    public List<String> getHotelNames(){
+    public List<String> getHotelNames() {
         return hotelList.stream()
-                        .map(e->e.getAttribute("textContent"))
-                        .collect(Collectors.toList());
-    }
-    public String getHeadingText(){
-        return heading.getText();
+                .map(e -> e.getAttribute("textContent"))
+                .collect(Collectors.toList());
     }
 
+    public String getHeadingText() {
+        return heading.getText();
+    }
 
 
 }
