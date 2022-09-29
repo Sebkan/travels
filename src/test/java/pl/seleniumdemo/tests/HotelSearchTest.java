@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.seleniumdemo.pages.HotelSearchPage;
+import pl.seleniumdemo.pages.ResultsPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -26,9 +27,9 @@ public class HotelSearchTest extends DriverFactory {
         hotelSearchPage.setDates("17/10/2022","20/10/2022");
         hotelSearchPage.setTravellers();
         hotelSearchPage.performSearch();
-        List<String> hotelNames = driver.findElements(By.cssSelector("h4[class='RTL go-text-right mt0 mb4 list_title']")).stream()
-                                                                                                                         .map(e->e.getAttribute("textContent"))
-                                                                                                                         .collect(Collectors.toList());
+
+        ResultsPage resultsPage = new ResultsPage(driver);
+        List<String> hotelNames = resultsPage.getHotelNames();
         Assert.assertEquals(hotelNames.get(0),"Jumeirah Beach Hotel");
         Assert.assertEquals(hotelNames.get(1),"Oasis Beach Tower");
         Assert.assertEquals(hotelNames.get(2),"Rose Rayhaan Rotana");
