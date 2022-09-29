@@ -1,17 +1,11 @@
 package pl.seleniumdemo.tests;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.ResultsPage;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HotelSearchTest extends DriverFactory {
 
@@ -19,11 +13,6 @@ public class HotelSearchTest extends DriverFactory {
     public void searchHotel() {
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.setCityName("Dubai");
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        wait.withTimeout(Duration.ofSeconds(5));
-        wait.ignoring(NoSuchElementException.class);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='select2-match' and text()='Dubai']")));
-        driver.findElement(By.xpath("//span[@class='select2-match' and text()='Dubai']")).click();
         hotelSearchPage.setDates("17/10/2022","20/10/2022");
         hotelSearchPage.setTravellers(1,1);
         hotelSearchPage.performSearch();

@@ -10,15 +10,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.time.Duration;
-import java.util.List;
 
 public class HotelSearchPage {
     @FindBy(xpath = "//span[text()='Search by Hotel or City Name']")
     private WebElement searchHotelSpan;
     @FindBy(xpath = "//div[@id='select2-drop']//input")
     private WebElement inputHotelName;
-    @FindBy(xpath = "//span[@class='select2-match' and text()='Dubai']")
-    private WebElement cityMatch;
+
     @FindBy(name="checkin")
     private WebElement checkinInput;
     @FindBy(name="checkout")
@@ -33,14 +31,22 @@ public class HotelSearchPage {
     @FindBy(css = "button[type='submit']")
     private WebElement submitButton;
 
+    private WebDriver driver;
 
     public HotelSearchPage(WebDriver driver){
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
     public void setCityName(String cityName){
         searchHotelSpan.click();
         inputHotelName.sendKeys(cityName);
+        String locator = String.format("//span[@class='select2-match' and text()='%s']",cityName);
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.withTimeout(Duration.ofSeconds(5));
+        wait.ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
+        driver.findElement(By.xpath(locator)).click();
     }
 
     public void setDates(String checkIn, String checkOut){
