@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pl.seleniumdemo.model.User;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.LoggedUserPage;
 import pl.seleniumdemo.pages.SignUpPage;
@@ -37,19 +38,27 @@ public class SignUpTest extends DriverFactory {
     }
     @Test
     public void signUpTest2() {
-        String lastName = "Kanecki";
         int randomNumber = (int) (Math.random()*1000);
         String email = "test"+randomNumber+"@tester.pl";
+        User user = new User();
+        user.setFirstName("Sebastian");
+        user.setLastName("Kanecki");
+        user.setPhone("666666666");
+        user.setEmail(email);
+        user.setPassword("test123");
+        user.setConfirmPassword("test123");
+
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         SignUpPage signUpPage = new SignUpPage(driver);
         hotelSearchPage.signUpForm();
-        signUpPage.fillSignUpForm("Sebastian","Kanecki","666666666",email,"test123");
+
+        signUpPage.fillSignUpForm(user);
         LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
         FluentWait<WebDriver> wait = new FluentWait<>(driver);
         wait.ignoring(NoSuchElementException.class);
         wait.withTimeout(Duration.ofSeconds(3));
         wait.until(ExpectedConditions.visibilityOf(loggedUserPage.heading));
-        Assert.assertTrue(loggedUserPage.headingText().contains(lastName));
+        Assert.assertTrue(loggedUserPage.headingText().contains(user.getLastName()));
         Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
     }
         @Test
