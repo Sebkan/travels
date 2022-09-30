@@ -36,31 +36,7 @@ public class SignUpTest extends BaseTest {
         Assert.assertTrue(loggedUserPage.headingText().contains(lastName));
         Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
     }
-    @Test
-    public void signUpTest2() {
-        int randomNumber = (int) (Math.random()*1000);
-        String email = "test"+randomNumber+"@tester.pl";
-        User user = new User();
-        user.setFirstName("Sebastian");
-        user.setLastName("Kanecki");
-        user.setPhone("666666666");
-        user.setEmail(email);
-        user.setPassword("test123");
-        user.setConfirmPassword("test123");
 
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        SignUpPage signUpPage = new SignUpPage(driver);
-        hotelSearchPage.signUpForm();
-
-        signUpPage.fillSignUpForm(user);
-        LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        wait.ignoring(NoSuchElementException.class);
-        wait.withTimeout(Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOf(loggedUserPage.heading));
-        Assert.assertTrue(loggedUserPage.headingText().contains(user.getLastName()));
-        Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
-    }
         @Test
         public void notFullData() {
             HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
@@ -79,13 +55,6 @@ public class SignUpTest extends BaseTest {
             Assert.assertEquals(signUpPage.getErrorNames().get(3),"The First name field is required.");
             Assert.assertEquals(signUpPage.getErrorNames().get(4),"The Last Name field is required.");
 
-            /*SoftAssert softAssert = new SoftAssert();
-            softAssert.assertTrue(alertList.contains("The Email field is required."));
-            softAssert.assertTrue(alertList.contains("The Password field is required."));
-            softAssert.assertTrue(alertList.contains("The Password field is required."));
-            softAssert.assertTrue(alertList.contains("The First name field is required."));
-            softAssert.assertTrue(alertList.contains("The Last Name field is required."));
-            softAssert.assertAll();*/
         }
         @Test
         public void wrongEmail(){

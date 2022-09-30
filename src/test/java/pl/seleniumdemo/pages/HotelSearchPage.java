@@ -1,5 +1,7 @@
 package pl.seleniumdemo.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -38,12 +40,15 @@ public class HotelSearchPage {
 
     private WebDriver driver;
 
+    private static final Logger logger = LogManager.getLogger();
+
     public HotelSearchPage(WebDriver driver){
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
 
-    public HotelSearchPage setCityName(String cityName){
+    public void setCityName(String cityName){
+        logger.info("Start setting the city name " + cityName);
         searchHotelSpan.click();
         inputHotelName.sendKeys(cityName);
         String locator = String.format("//span[@class='select2-match' and text()='%s']",cityName);
@@ -52,28 +57,34 @@ public class HotelSearchPage {
         wait.ignoring(NoSuchElementException.class);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
         driver.findElement(By.xpath(locator)).click();
-        return this;
+        logger.info("Setting city done");
     }
 
-    public HotelSearchPage setDates(String checkIn, String checkOut){
+    public void setDates(String checkIn, String checkOut){
+        logger.info("Setting dates start "+checkIn+" and "+checkOut);
         checkinInput.sendKeys(checkIn);
         checkoutInput.sendKeys(checkOut);
-        return this;
+        logger.info("setting dates done");
     }
-    public HotelSearchPage setTravellers(int adultsToAdd, int childToAdd){
+    public void setTravellers(int adultsToAdd, int childToAdd){
+        logger.info("Adding travellers: adults: "+adultsToAdd+" children: "+childToAdd);
         travellersInput.click();
+        FluentWait<WebDriver> wait = new FluentWait<>(driver);
+        wait.withTimeout(Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(adultNumber));
             addTravellers(adultNumber,adultsToAdd);
             addTravellers(childNumber,childToAdd);
-        return this;
+        logger.info("Adding travellers done");
     }
     private void addTravellers (WebElement travellerBtn, int numberOfTravellers){
         for (int i = 0; i < numberOfTravellers; i++){
             travellerBtn.click();
         }
     }
-    public ResultsPage performSearch(){
+    public void performSearch(){
+        logger.info("Performing search");
         submitButton.click();
-        return new ResultsPage(driver) ;
+        logger.info("Performing search done");
     }
 
     public void signUpForm(){
@@ -83,9 +94,6 @@ public class HotelSearchPage {
                 .ifPresent(WebElement::click);
         signUpBtn.get(1).click();
     }
-
-
-
 
     /*public void setOldStyleTravellers (int addAdults, int addChild){
         for(int i=0; i < addAdults; i++){
