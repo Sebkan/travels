@@ -24,7 +24,7 @@ public class HotelSearchTest extends BaseTest {
         Assert.assertEquals(hotelNames.get(3), "Hyatt Regency Perth");
     }
 
-        @Test (priority = 1)
+        @Test
         public void noResults()  {
             HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
             hotelSearchPage.setDates("11/11/2022","15/11/2022");

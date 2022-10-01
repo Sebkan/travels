@@ -11,6 +11,7 @@ import pl.seleniumdemo.model.User;
 import pl.seleniumdemo.pages.HotelSearchPage;
 import pl.seleniumdemo.pages.LoggedUserPage;
 import pl.seleniumdemo.pages.SignUpPage;
+import pl.seleniumdemo.utils.SeleniumHelper;
 
 import java.time.Duration;
 
@@ -29,10 +30,6 @@ public class SignUpTest extends BaseTest {
         signUpPage.setPassword("test123","test123");
         signUpPage.submit();
         LoggedUserPage loggedUserPage = new LoggedUserPage(driver);
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        wait.ignoring(NoSuchElementException.class);
-        wait.withTimeout(Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOf(loggedUserPage.heading));
         Assert.assertTrue(loggedUserPage.headingText().contains(lastName));
         Assert.assertEquals(loggedUserPage.headingText(), "Hi, Sebastian Kanecki");
     }
@@ -43,12 +40,6 @@ public class SignUpTest extends BaseTest {
             hotelSearchPage.signUpForm();
             SignUpPage signUpPage = new SignUpPage(driver);
             signUpPage.submit();
-
-            FluentWait<WebDriver> wait = new FluentWait<>(driver);
-            wait.ignoring(java.util.NoSuchElementException.class);
-            wait.withTimeout(Duration.ofSeconds(2));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']//p")));
-
             Assert.assertEquals(signUpPage.getErrorNames().get(0),"The Email field is required.");
             Assert.assertEquals(signUpPage.getErrorNames().get(1),"The Password field is required.");
             Assert.assertEquals(signUpPage.getErrorNames().get(2),"The Password field is required.");
@@ -65,10 +56,6 @@ public class SignUpTest extends BaseTest {
             signUpPage.setEmail("tester");
             signUpPage.setPassword("test123","test123");
             signUpPage.submit();
-            FluentWait<WebDriver> wait = new FluentWait<>(driver);
-            wait.ignoring(java.util.NoSuchElementException.class);
-            wait.withTimeout(Duration.ofSeconds(2));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-danger']//p")));
             Assert.assertEquals(signUpPage.getEmailError(),"The Email field must contain a valid email address.");
         }
     }

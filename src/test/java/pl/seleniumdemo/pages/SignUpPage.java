@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import pl.seleniumdemo.model.User;
+import pl.seleniumdemo.utils.SeleniumHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +32,11 @@ public class SignUpPage {
     @FindBy (xpath = "//div[@class='alert alert-danger']//p")
     private WebElement emailError;
 
+    private WebDriver driver;
+
     public SignUpPage(WebDriver driver){
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
     public void setNameLastPhone (String firstName, String lastName, String phoneNumber){
@@ -51,9 +55,11 @@ public class SignUpPage {
         signUpBtn.click();
     }
     public List<String> getErrorNames(){
+        SeleniumHelper.waitForList(driver,By.xpath("//div[@class='alert alert-danger']//p"));
         return errorList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
     public String getEmailError(){
+        SeleniumHelper.waitForElementToBeVisible(driver,emailError);
         return emailError.getText();
     }
 

@@ -6,7 +6,7 @@
                         <class name="pl.seleniumdemo.tests.HotelSearchTest"></class>
                 </classes>
         </test>
-        <test name = "Sign Up Test">
+        <test name = "Sign Up Test" >
                 <classes>
                         <class name = "pl.seleniumdemo.tests.SignUpTest"></class>
                 </classes>
