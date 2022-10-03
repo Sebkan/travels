@@ -1,6 +1,7 @@
 package pl.seleniumdemo.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.Column;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 public class ExcelReader {
 
-    public static void readExcel(String fileName) throws IOException {
+    public static Object[][] readExcel(String fileName) throws IOException {
         File file = new File("src/test/resources/" + fileName);
         FileInputStream fileInputStream = new FileInputStream(file);
 
@@ -25,15 +26,21 @@ public class ExcelReader {
             workbook = new HSSFWorkbook(fileInputStream);
         }
         Sheet sheet = workbook.getSheetAt(0);
-
+        //sprawdzamy ostatni wiersz
         int rowCount = sheet.getLastRowNum();
+        //sprawdzamy ile jest kolumn, wiec pobieramy pierwszy wiersz i sprawdzamy ostatnia komorke
+        int columnCount = sheet.getRow(0).getLastCellNum();
+
+        Object[][] data = new Object[rowCount][columnCount];
+
         //i = 1 bo 0(pierwszy wiersz) to nagłówki, a ich nie chcemy
         for(int i = 1; i <= rowCount; i++){
             Row row = sheet.getRow(i);
-
-            System.out.println(row.getCell(0).getStringCellValue());
-            System.out.println(row.getCell(1).getStringCellValue());
+            for(int j = 0; j < columnCount; j++){
+                data[i-1][j] = row.getCell(j).getStringCellValue();
+            }
         }
+        return data;
     }
     public static void main(String[] args) throws IOException {
         readExcel("testData.xlsx");
